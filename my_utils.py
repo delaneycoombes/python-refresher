@@ -1,9 +1,9 @@
-def get_column(file_name, query_column, query_value, result_column):
+def get_column(file_name, query_column, query_value, result_column = 1):
    
     # create an empty array to store results
     results = []
 
-    with open(file_name, "r") as file:
+    with open(file_name, 'r') as file:
         for line in file:
             values = line.split(',')
 
@@ -11,4 +11,4 @@ def get_column(file_name, query_column, query_value, result_column):
             if values[query_column] == query_value:
                 results.append(values[result_column])
                 
-    return None
+    return results

@@ -1,0 +1,9 @@
+name: swe4s
+channels:
+  - conda-forge
+dependencies:
+  - pip
+  - pycodestyle
+  - python=3.12
+
+prefix: "/home/jovyan/miniforge3/envs/swe4s"

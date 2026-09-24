@@ -39,7 +39,7 @@ def median(arr):
     n = len(sort)
     
     # divide by two and round down
-    mid = n / / 2
+    mid = n // 2
 
     # calculate the median of an array of integers
     if n % 2 == 0:

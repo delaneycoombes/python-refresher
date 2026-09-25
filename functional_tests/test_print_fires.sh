@@ -1,58 +1,115 @@
-test -e ssshtest || wget -q https://raw.githubusercontent.com/ryanlayer/ssshtest/master/ssshtest
-. ssshtest
+import subprocess
+
+
+SCRIPT = "../print_fires.py"
+DATA = "../data/test_fires.csv"
+
+
+def run_test(args):
+    return subprocess.run(
+        ["python3", SCRIPT] + args,
+        capture_output=True,
+        text=True,
+    )
+
 
 # Exit code tests
-run test_exit_success_no_operation python3 ../print_fires.py Brazil 0 2 ../data/test_fires.csv
-assert_exit_code 0
+def test_exit_success_no_operation():
+    result = run_test(["Brazil", "0", "2", DATA])
+    assert result.returncode == 0
 
-run test_exit_success_mean python3 ../print_fires.py Brazil 0 2 ../data/test_fires.csv --operation mean
-assert_exit_code 0
 
-run test_exit_success_median python3 ../print_fires.py Brazil 0 2 ../data/test_fires.csv -o median
-assert_exit_code 0
+def test_exit_success_mean():
+    result = run_test(
+        ["Brazil", "0", "2", DATA, "--operation", "mean"]
+    )
+    assert result.returncode == 0
 
-run test_exit_success_std python3 ../print_fires.py Brazil 0 2 ../data/test_fires.csv --operation std
-assert_exit_code 0
 
-run test_exit_missing_args python3 ../print_fires.py
-assert_exit_code 2
+def test_exit_success_median():
+    result = run_test(
+        ["Brazil", "0", "2", DATA, "-o", "median"]
+    )
+    assert result.returncode == 0
 
-run test_exit_bad_operation python3 ../print_fires.py Brazil 0 2 ../data/test_fires.csv --operation foo
-assert_exit_code 2
+
+def test_exit_success_std():
+    result = run_test(
+        ["Brazil", "0", "2", DATA, "--operation", "std"]
+    )
+    assert result.returncode == 0
+
+
+def test_exit_missing_args():
+    result = run_test([])
+    assert result.returncode == 2
+
+
+def test_exit_bad_operation():
+    result = run_test(
+        ["Brazil", "0", "2", DATA, "--operation", "foo"]
+    )
+    assert result.returncode == 2
+
 
 # Raw list output tests
-run test_raw_brazil python3 ../print_fires.py Brazil 0 2 ../data/test_fires.csv
-assert_exit_code 0
-assert_in_stdout 100
-assert_in_stdout 150
-assert_in_stdout 200
+def test_raw_brazil():
+    result = run_test(["Brazil", "0", "2", DATA])
+    assert result.returncode == 0
+    assert "100" in result.stdout
+    assert "150" in result.stdout
+    assert "200" in result.stdout
 
-run test_raw_usa python3 ../print_fires.py USA 0 2 ../data/test_fires.csv
-assert_exit_code 0
-assert_in_stdout 20
-assert_in_stdout 25
 
-run test_raw_unknown_country python3 ../print_fires.py Nowhere 0 2 ../data/test_fires.csv
-assert_exit_code 0
-assert_in_stdout []
+def test_raw_usa():
+    result = run_test(["USA", "0", "2", DATA])
+    assert result.returncode == 0
+    assert "20" in result.stdout
+    assert "25" in result.stdout
+
+
+def test_raw_unknown_country():
+    result = run_test(["Nowhere", "0", "2", DATA])
+    assert result.returncode == 0
+    assert "[]" in result.stdout
+
 
 # Operation tests
-run test_mean_brazil python3 ../print_fires.py Brazil 0 2 ../data/test_fires.csv --operation mean
-assert_exit_code 0
-assert_in_stdout 150.0
+def test_mean_brazil():
+    result = run_test(
+        ["Brazil", "0", "2", DATA, "--operation", "mean"]
+    )
+    assert result.returncode == 0
+    assert "150.0" in result.stdout
 
-run test_median_brazil python3 ../print_fires.py Brazil 0 2 ../data/test_fires.csv -o median
-assert_exit_code 0
-assert_in_stdout 150.0
 
-run test_std_brazil python3 ../print_fires.py Brazil 0 2 ../data/test_fires.csv --operation std
-assert_exit_code 0
-assert_stdout
+def test_median_brazil():
+    result = run_test(
+        ["Brazil", "0", "2", DATA, "-o", "median"]
+    )
+    assert result.returncode == 0
+    assert "150.0" in result.stdout
 
-run test_mean_usa python3 ../print_fires.py USA 0 2 ../data/test_fires.csv --operation mean
-assert_exit_code 0
-assert_in_stdout 22.5
 
-run test_mean_unknown python3 ../print_fires.py Nowhere 0 2 ../data/test_fires.csv --operation mean
-assert_exit_code 0
-assert_in_stdout []
+def test_std_brazil():
+    result = run_test(
+        ["Brazil", "0", "2", DATA, "--operation", "std"]
+    )
+    assert result.returncode == 0
+    assert result.stdout
+
+
+def test_mean_usa():
+    result = run_test(
+        ["USA", "0", "2", DATA, "--operation", "mean"]
+    )
+    assert result.returncode == 0
+    assert "22.5" in result.stdout
+
+
+def test_mean_unknown():
+    result = run_test(
+        ["Nowhere", "0", "2", DATA, "--operation", "mean"]
+    )
+    assert result.returncode == 0
+    assert "[]" in result.stdout

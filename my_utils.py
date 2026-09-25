@@ -29,6 +29,7 @@ def mean(arr):
     # calculate the mean of an array of integers
     return sum(arr) / len(arr)
 
+
 def median(arr):
     # display error message for empty arrays
     if not arr:
@@ -37,19 +38,21 @@ def median(arr):
     # sort and count the array elements
     sort = sorted(arr)
     n = len(sort)
-    
+
     # divide by two and round down
     mid = n // 2
 
     # calculate the median of an array of integers
     if n % 2 == 0:
-        return(sort[mid - 1] + sort[mid]) / 2
+        return (sort[mid - 1] + sort[mid]) / 2
     return float(sort[mid])
+
 
 def standard_deviation(arr):
     # display error message for empty arrays
     if not arr:
-        raise ValueError("The standard deviation of an empty array cannot be computed")
+        raise ValueError(
+            "The standard deviation of an empty array cannot be computed")
 
     # calculate the mean and variance
     m = mean(arr)
@@ -57,5 +60,3 @@ def standard_deviation(arr):
 
     # calculate standard devication which is the square root of the variance
     return variance ** 0.5
-
-    

@@ -37,4 +37,3 @@ elif args.operation == 'median':
     print(my_utils.median(fires))
 elif args.operation == 'std':
     print(my_utils.standard_deviation(fires))
-

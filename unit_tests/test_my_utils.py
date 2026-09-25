@@ -2,12 +2,12 @@ import os
 import sys
 import unittest
 import random
-
 import my_utils
+
 
 # test cases for mean function
 class TestMean(unittest.TestCase):
-    
+
     # for list of all positive integers
     def test_mean_positive(self):
         self.assertAlmostEqual(my_utils.mean([1, 2, 3, 4, 5]), 3.0)
@@ -34,6 +34,7 @@ class TestMean(unittest.TestCase):
         data = [random.randint(-100, 100) for _ in range(20)]
         expected = sum(data) / len(data)
         self.assertAlmostEqual(my_utils.mean(data), expected)
+
 
 # test cases for median function
 class TestMedian(unittest.TestCase):
@@ -67,6 +68,7 @@ class TestMedian(unittest.TestCase):
         expected = float(sort[n // 2])
         self.assertAlmostEqual(my_utils.median(data), expected)
 
+
 # test case for standard deviation function
 class TestStandardDeviation(unittest.TestCase):
 
@@ -89,15 +91,18 @@ class TestStandardDeviation(unittest.TestCase):
 
     # for non numeric list elements
     def test_std_non_numeric(self):
-        self.assertRaises(TypeError, my_utils.standard_deviation, [1, 2, 'bad'])
+        self.assertRaises(TypeError,
+                          my_utils.standard_deviation,
+                          [1, 2, 'bad'])
 
     # randomness test
     def test_std_random(self):
         random.seed(7)
-        data = [random.uniform(-10,10) for _ in range(10)]
+        data = [random.uniform(-10, 10) for _ in range(10)]
         m = sum(data) / len(data)
         expected = (sum((x - m) ** 2 for x in data) / len(data)) ** 0.5
         self.assertAlmostEqual(my_utils.standard_deviation(data), expected)
+
 
 if __name__ == '__main__':
     unittest.main()

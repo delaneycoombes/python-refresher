@@ -7,3 +7,6 @@ This project contains the python function, 'get_column()' which reads data from 
 'print_fires.py' calls the 'get_column()' function to display the fire emissions for a specific country
 'run.sh' runs the 'print_fires.py' program
 'environment.yml' contains the dependencies for the Mamba enviornment
+
+# Assignment 3 Changes
+Added mean, median, and standard deviation functions to 'my_utils.py'. Added command-line operation options to 'print_fires.py' and created unit and functional tests to test normal and error-producing behavior.
